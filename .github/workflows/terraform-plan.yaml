@@ -16,7 +16,7 @@ jobs:
 
       # Step 2: Save the PR number in a file
       - name: Save the PR number in an artifact
-        run: echo ${{ github.event.pull_request.number }} > pr_num.txt
+        run: echo -e "123\nTEST=BLA" > pr_num.txt
       # Step 3: Upload the PR number artifact
       - name: Upload the PR number artifact
         uses: actions/upload-artifact@v3
