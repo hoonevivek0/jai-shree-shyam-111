@@ -1,0 +1,31 @@
+name: TF Plan Comment
+on:
+  workflow_run:
+    workflows: ["Terraform Plan"]
+    types:
+      - completed
+
+permissions:
+  issues: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  plan-comment:
+    runs-on: ubuntu-latest
+    environment:
+      name: tfauto
+    steps:
+      - name: Download workflow artifact
+        uses: dawidd6/action-download-artifact@246dbf436b23d7c49e21a7ab8204ca9ecd1fe615 #v2.27.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: terraform-plan.yaml
+          run_id: ${{ github.event.workflow_run.id }}
+      - name: Read the pr_num file
+        id: pr_num_reader
+        uses: juliangruber/read-file-action@02bbba9876a8f870efd4ad64e3b9088d3fb94d4b #v1.1.6
+        with:
+          path: ./pr_num/pr_num.txt
+      - name: Remove new line characters
+        run: echo "PR_NUM=$(echo '${{ steps.pr_num_reader.outputs.content }}' | tr -d '\n')" >> $GITHUB_ENV
