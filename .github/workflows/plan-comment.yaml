@@ -28,4 +28,4 @@ jobs:
         with:
           path: ./pr_num/pr_num.txt
       - name: Remove new line characters
-        run: echo "PR_NUM=$(echo '${{ steps.pr_num_reader.outputs.content }}' | tr -d '\n')" >> $GITHUB_ENV
+        run: echo "PR_NUM=$(echo '${{ steps.pr_num_reader.outputs.content }}')" >> $GITHUB_ENV
